@@ -1,4 +1,4 @@
-# STM32F4-uart-driver-from-scratch
+# STM32F4-adc-driver-from-scratch
 
 In this project, I have developed an ADC driver library for the STM32F4 series microcontrollers. This library is designed to be efficient and easy to integrate into various applications. It supports both single and continuous conversion modes, providing flexibility for different use cases. The driver is built from scratch, allowing for a deeper understanding of the ADC peripheral and its associated registers. The code is structured to be modular, making it easy to extend or modify according to specific project needs.
 ## Technical Equipments
