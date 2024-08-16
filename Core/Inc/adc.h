@@ -14,27 +14,6 @@
 
 #define __IO    volatile
 
-
-#ifdef SENSOR_TEST_MODE
-#endif
-
-
-
-/*
- * This library requires a circular buffer implementation.
- * We need to collect data in different modes:
- * ADC Single Conversion Mode and Continuous Conversion Mode.
- * Therefore, I will implement a circular buffer here.
- * In the future, I plan to develop a separate library for the circular buffer.
- *
- * #include "circular_buffer.h"
- *
- *typedef struct{
-	uint16_t* const circularBuffer;
-};
- */
-
-
 /*ADC's Registers*/
 typedef struct
 {
@@ -125,7 +104,6 @@ typedef struct
   __IO uint32_t AFR[2];   /*!< GPIO alternate function registers,     Address offset: 0x20-0x24 */
 } GPIO_TypeDef;
 
-
 typedef enum ConversionTypeDefEnum{
 	SINGLE_CONVERSION_MODE,
 	CONTINUOUS_CONVERSION_MODE,
@@ -160,35 +138,11 @@ typedef enum InterruptPriorityEnum{
 	NUM_OF_PRIORITY_LEVEL,
 }InterruptPriority;
 
-typedef enum {
-	ADC1_CHANNEL_IN0,
-	ADC1_CHANNEL_IN1,
-	ADC1_CHANNEL_IN2,
-	ADC1_CHANNEL_IN3,
-	ADC1_CHANNEL_IN4,
-	ADC1_CHANNEL_IN5,
-	ADC1_CHANNEL_IN6,
-	ADC1_CHANNEL_IN7,
-	ADC1_CHANNEL_IN8,
-	ADC1_CHANNEL_IN9,
-	ADC1_CHANNEL_IN10,
-	ADC1_CHANNEL_IN11,
-	ADC1_CHANNEL_IN12,
-	ADC1_CHANNEL_IN13,
-	ADC1_CHANNEL_IN14,
-	ADC1_CHANNEL_IN15,
-	ADC1_CHANNEL_IN16,
-	ADC1_CHANNEL_IN17,
-	ADC1_CHANNEL_IN18,
-	MAX_CHANNEL_NUM_OF_ADC
-}ChannelNumber;
-
 typedef enum DMAStatusTypeDefEnum{
 	DMA_OK = 1,
 	DMA_ERROR,
 	NUM_OF_DMA_STATUS,
 }DMAStatusType;
-
 
 typedef struct{
 	ADC_TypeDef* instance;
@@ -197,16 +151,16 @@ typedef struct{
 
 #define GPIO_PIN_SET(__PIN_POS__, __PIN_MODE__)	 (__PIN_MODE__ << __PIN_POS__)
 
-#define CLEAR_BIT_POS		  (0x03U)
-#define CLEAR_BIT_POS_3		  (0x07U)
-#define INPUT_MODE			  (0x00U)
-#define OUTPUT_MODE			  (0x01U)
-#define ALTERNATE_MODE	 	  (0x02U)
-#define ANALOG_MODE			  (0x03U)
+#define CLEAR_BIT_POS		(0x03U)
+#define CLEAR_BIT_POS_3		(0x07U)
+#define INPUT_MODE		(0x00U)
+#define OUTPUT_MODE		(0x01U)
+#define ALTERNATE_MODE	 	(0x02U)
+#define ANALOG_MODE		(0x03U)
 
-#define GPIO_PIN_0       	  (0U)
-#define GPIO_PIN_1	          (2U)
-#define GPIO_PIN_2         	  (4U)
+#define GPIO_PIN_0            (0U)
+#define GPIO_PIN_1	      (2U)
+#define GPIO_PIN_2            (4U)
 #define GPIO_PIN_3            (6U)
 #define GPIO_PIN_4            (8U)
 #define GPIO_PIN_5            (10U)
@@ -220,8 +174,6 @@ typedef struct{
 #define GPIO_PIN_13           (26U)
 #define GPIO_PIN_14           (28U)
 #define GPIO_PIN_15           (30U)
-
-
 
 /* Peripheral base address*/
 #define PERIPH_BASE           0x40000000UL
@@ -270,10 +222,10 @@ typedef struct{
 #define GPIOAEN     			(RCC_GPIOA_POS)
 
 #define RCC_ADC1_POS      		(8U)
-#define ADC1EN     			  	(RCC_ADC1_POS)
+#define ADC1EN     			(RCC_ADC1_POS)
 
 #define RCC_DMA2_POS			(22U)
-#define DMA2EN					(RCC_DMA2_POS)
+#define DMA2EN				(RCC_DMA2_POS)
 
 /*ADC Channel Number*/
 #define ADC_IN0_CHANNEL			(0x00U)
@@ -315,7 +267,6 @@ typedef struct{
 #define SEQUENCE_LENGTH_15		(0x0EU)
 #define SEQUENCE_LENGTH_16		(0x0FU)
 
-
 /*ADC Rank Number*/
 #define SEQUENCE_Rank_1			(1U)
 #define SEQUENCE_Rank_2			(2U)
@@ -340,8 +291,8 @@ typedef struct{
 #define ADC_CLOCK_CYCLES_28		(0x02)
 #define ADC_CLOCK_CYCLES_56		(0x03)
 #define ADC_CLOCK_CYCLES_84		(0x04)
-#define ADC_CLOCK_CYCLES_112	(0x05)
-#define ADC_CLOCK_CYCLES_144	(0x06)
+#define ADC_CLOCK_CYCLES_112		(0x05)
+#define ADC_CLOCK_CYCLES_144		(0x06)
 
 /*Conversion Number*/
 #define ADC_CONV_NUM_1			(0x00)	// 1 conversion
@@ -362,29 +313,27 @@ typedef struct{
 #define ADC_CONV_NUM_16			(0x0F)
 
 
-
-
 /*ADC Bits.*/
-#define ANALOG_PA1							(0x03U << 2)
-#define ANALOG_PA2							(0x03U << 4)
-#define ANALOG_PA3							(0x03U << 6)
-#define IDR_PA1								(1U << 1)
-#define CR2_SWSTART							(1U << 30)
-#define CR2_ADON							(1U << 0)
-#define CR2_CONT							(1U << 1)
-#define CR2_RIGHT_ALIGN						(1U << 11)
-#define CR1_12_BIT_RESOLUTION				(0x03U << 24)
-#define ADC_CR2_EOCS						(1U << 10)
-#define ADC_SR_EOC_BIT						(1U << 1)
-#define ADC_SR_JEOC_BIT						(1U << 2)
-#define ADC_SR_AWD_BIT						(1U << 0)
-#define ADC_SR_OVR_BIT						(1U << 5)
-#define ADC_CR1_SCAN_BIT					(1U << 8)
-#define ADC_SQR1_SEQUENCE_LENGTH_BIT 		(0x02 << 20)	//Sample 3 channel
-#define ADC_SINGLE_CONV_LENGTH_BIT			(0x0F)
-#define ADC_CR2_SWSTART						(1U << 30)
-#define ADC_CR2_DMA_EN						(1U << 8)
-#define ADC_CR2_DDS							(1U << 9)
+#define ANALOG_PA1			(0x03U << 2)
+#define ANALOG_PA2			(0x03U << 4)
+#define ANALOG_PA3			(0x03U << 6)
+#define IDR_PA1				(1U << 1)
+#define CR2_SWSTART			(1U << 30)
+#define CR2_ADON			(1U << 0)
+#define CR2_CONT			(1U << 1)
+#define CR2_RIGHT_ALIGN			(1U << 11)
+#define CR1_12_BIT_RESOLUTION		(0x03U << 24)
+#define ADC_CR2_EOCS			(1U << 10)
+#define ADC_SR_EOC_BIT			(1U << 1)
+#define ADC_SR_JEOC_BIT			(1U << 2)
+#define ADC_SR_AWD_BIT			(1U << 0)
+#define ADC_SR_OVR_BIT			(1U << 5)
+#define ADC_CR1_SCAN_BIT		(1U << 8)
+#define ADC_SQR1_SEQUENCE_LENGTH_BIT 	(0x02 << 20)	//Sample 3 channel
+#define ADC_SINGLE_CONV_LENGTH_BIT	(0x0F)
+#define ADC_CR2_SWSTART			(1U << 30)
+#define ADC_CR2_DMA_EN			(1U << 8)
+#define ADC_CR2_DDS			(1U << 9)
 
 /*ADC Interrupt flag control*/
 #define ADC_EOCIE_BIT			(1U << 5)
@@ -397,27 +346,25 @@ typedef struct{
 #define ADC_VBATE_BIT			(1U << 22)
 
 /*DMA2 Bits*/
-#define DMA2_EN 				(1U << 0)
-#define DMA2_CHSEL				(0x07U << 25)
-#define STREAM_PRIORITY_MASK	(0x03U << 16)
-#define STREAM_HIGH_PRIORITY	(0x02U << 16)
+#define DMA2_EN 			(1U << 0)
+#define DMA2_CHSEL			(0x07U << 25)
+#define STREAM_PRIORITY_MASK		(0x03U << 16)
+#define STREAM_HIGH_PRIORITY		(0x02U << 16)
 #define DATA_TRANSFER_DIR		(0x03U << 6)
-#define DMA_CIRC				(1U << 8)
-#define DMA_PINC 				(1U << 9)
-#define DMA_MINC				(1U << 10)
-#define DMA_MBURST				(0x03U << 23)
-#define DMA_PBURST				(0x03U << 21)
+#define DMA_CIRC			(1U << 8)
+#define DMA_PINC 			(1U << 9)
+#define DMA_MINC			(1U << 10)
+#define DMA_MBURST			(0x03U << 23)
+#define DMA_PBURST			(0x03U << 21)
 #define DMA_PSIZE_16BIT			(1U << 11)
 #define DMA_MSIZE_16BIT			(1U << 13)
 
-
-
 #define ADC_IS_FLAG_SET(__ADC__,__REG__,__FLAG__)		(__ADC__-> __REG__  & __FLAG__) == __FLAG__
 #define ADC_IS_BIT_SET(__ADC__,__REG__,__BIT__)			(__ADC__-> __REG__  & __BIT__) == __BIT__
-#define ADC_IS_EOCIE_FLAG(__ADC__)						(__ADC__-> CR1  & ADC_EOCIE_BIT) == ADC_EOCIE_BIT
-#define ADC_IS_JEOCIE_FLAG(__ADC__)						(__ADC__-> CR1  & ADC_JEOCIE_BIT) == ADC_JEOCIE_BIT
-#define ADC_IS_AWDIE_FLAG(__ADC__)						(__ADC__-> CR1  & ADC_AWDIE_BIT) == ADC_AWDIE_BIT
-#define ADC_IS_OVRIE_FLAG(__ADC__)						(__ADC__-> CR1  & ADC_OVRIE_BIT) == ADC_OVRIE_BIT
+#define ADC_IS_EOCIE_FLAG(__ADC__)				(__ADC__-> CR1  & ADC_EOCIE_BIT) == ADC_EOCIE_BIT
+#define ADC_IS_JEOCIE_FLAG(__ADC__)				(__ADC__-> CR1  & ADC_JEOCIE_BIT) == ADC_JEOCIE_BIT
+#define ADC_IS_AWDIE_FLAG(__ADC__)				(__ADC__-> CR1  & ADC_AWDIE_BIT) == ADC_AWDIE_BIT
+#define ADC_IS_OVRIE_FLAG(__ADC__)				(__ADC__-> CR1  & ADC_OVRIE_BIT) == ADC_OVRIE_BIT
 
 #define ADC_CLEAR_BIT(__ADC__,__REG__,__FLAG__)		(__ADC__ -> __REG__ &= ~(__FLAG__))
 
@@ -439,12 +386,10 @@ ADCStatusType adc_set_channel(ADC_TypeDef* adcx, uint32_t channel, uint32_t rank
 void adc_open(ADC_TypeDef* adcx);
 void ADC_trigger(ADC_TypeDef * adcx);
 
-
+/*Dma functions*/
 DMAStatusType DMA_open_stream(DMA_Stream_TypeDef* dma);
 DMAStatusType DMA_close_stream(DMA_Stream_TypeDef* dma);
 void DMA_config(DMA_Stream_TypeDef* dma);
-
-
 
 extern uint16_t *ptr;
 extern uint16_t gDataArr[MAX_SIZE_OF_CONVERTED_DATA];
